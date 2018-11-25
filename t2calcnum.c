@@ -12,8 +12,8 @@
 #include <stdio.h>
 #include <math.h>
 
-#define MAX_ERROR 10e-10
-#define SIG_DIGITS 8
+#define MAX_ERROR 1.0e-8
+#define SIG_DIGITS 10
 
 
 typedef struct {
@@ -87,7 +87,7 @@ double integrate_tra(Function func, pair_double interval, unsigned subIntervals)
 	increment = (interval.second-interval.first)/subIntervals;
 	x = interval.first + increment;
 	result = (func.f(interval.first)+func.f(interval.second))/2.0;
-	for(i=1;i<subIntervals-1;i++, x+=increment){
+	for(i=1;i<subIntervals;i++, x+=increment){
 		result+=func.f(x);
 	}
 	result*=increment;
@@ -112,10 +112,10 @@ double integrate_simp13(Function func, pair_double interval, unsigned subInterva
 	increment = (interval.second-interval.first)/subIntervals;
 	x = interval.first + increment;
 	result = 0.0;
-	for(i=1;i<(subIntervals/2)-1;i++, x+=increment){
+	for(i=1;i<(subIntervals/2);i++, x+=increment){
 		result+=2.0*func.f(x);
 		x+=increment;
-		result+=func.f(x);
+		result+=1*func.f(x);
 	}
 	result*=2.0;
 	result+=(func.f(interval.first)+func.f(interval.second)+4.0*func.f(interval.second-increment));
